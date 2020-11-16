@@ -1,5 +1,6 @@
 package com.example.demo.src.mahjong;
 
+import lombok.SneakyThrows;
 import sun.audio.AudioPlayer;
 import sun.audio.AudioStream;
 
@@ -11,7 +12,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.FileInputStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Random;
 
@@ -58,15 +58,15 @@ public class FrogPanel extends JPanel implements MouseListener {
         winBtn.setText("和牌");
         winBtn.setSize(70, 27);
         this.add(getBtn);
-        getBtn.setLocation(500, 600);
+        getBtn.setLocation(500, 720);
         this.add(pengBtn);
-        pengBtn.setLocation(600, 600);
+        pengBtn.setLocation(600, 720);
         this.add(chiBtn);
-        chiBtn.setLocation(700, 600);
+        chiBtn.setLocation(700, 720);
         this.add(outBtn);
-        outBtn.setLocation(800, 600);
+        outBtn.setLocation(800, 720);
         this.add(winBtn);
-        winBtn.setLocation(900, 600);
+        winBtn.setLocation(900, 720);
         getBtn.setVisible(false);
         pengBtn.setVisible(false);
         chiBtn.setVisible(false);
@@ -90,7 +90,7 @@ public class FrogPanel extends JPanel implements MouseListener {
         });
         chiBtn.addActionListener(e -> {//吃牌点击
             Card card = playersOutCard[1].get(playersOutCard[1].size() - 1);
-            card.moveTo(90 + 55 * 13, 500);
+            card.moveTo(90 + 88 * 13, 600);
             card.setFront(true);
             playersCard[0].add(card);
             cardAddMouseListener(card);
@@ -110,7 +110,7 @@ public class FrogPanel extends JPanel implements MouseListener {
         });
         pengBtn.addActionListener(e -> {
             Card card = playersOutCard[1].get(playersOutCard[1].size() - 1);
-            card.moveTo(90 + 55 * 13, 500);
+            card.moveTo(90 + 88 * 13, 600);
             card.setFront(true);
             playersCard[0].add(card);
             cardAddMouseListener(card);
@@ -137,8 +137,11 @@ public class FrogPanel extends JPanel implements MouseListener {
     }
     
     //摸牌按钮事件,将卡组中的牌移动到玩家手中
+    @SneakyThrows
     private void onBtnGetClick() {
-        m_aCards[k].moveTo(90 + 55 * 13, 500);
+        m_aCards[k].moveTo(90 + 88 * 13, 600);
+        Thread.sleep(300);
+        sortPoker2(playersCard[0]);
         m_aCards[k].setFront(true);
         playersCard[0].add(m_aCards[k]);
         cardAddMouseListener(m_aCards[k]);
@@ -262,7 +265,7 @@ public class FrogPanel extends JPanel implements MouseListener {
         for (n = 0; n < m_aCards.length; n++) {
             System.out.println(m_aCards[n]);
             m_aCards[n].x = 90 + 20 * (n % 34);
-            m_aCards[n].y = 170 + 55 * (n - n % 34) / 34;
+            m_aCards[n].y = 170 + 88 * (n - n % 34) / 34;
             m_aCards[n].moveTo(m_aCards[n].x, m_aCards[n].y);
             this.setComponentZOrder(m_aCards[n], 0);
             m_aCards[n].setFront(false);
@@ -276,13 +279,13 @@ public class FrogPanel extends JPanel implements MouseListener {
         switch (i) {
             case 0: //玩家
                 m_aCards[k].setFront(true);
-                m_aCards[k].moveTo(90 + 55 * j, 500);
+                m_aCards[k].moveTo(90 + 88 * j, 600);
                 m_aCards[k].addMouseListener(this);
                 break;
             case 1: //cpu1
                 m_aCards[k].setFront(false);
                 //m_aCards[k].rotation = 180;
-                m_aCards[k].moveTo(90 + 55 * j, 80);
+                m_aCards[k].moveTo(90 + 88 * j, 180);
                 break;
         }
         playersCard[(k % 2)].add(m_aCards[k]);//分别记录两个牌手的牌数组
@@ -301,29 +304,33 @@ public class FrogPanel extends JPanel implements MouseListener {
         Card temp;
         n = cards.size();
         //排序
-        Collections.sort(cards, new SortByImageID());
+//        cards.stream().forEach(c -> {
+//            System.out.println(((Card) c).getImageID());
+//        });
+        cards.sort(new Comparator<Card>() {
+            @Override
+            public int compare(Card s1, Card s2) {
+                if (s1.getImageID() > s2.getImageID()) {
+                    return 1;
+                }
+                if(s1.getImageID()==s2.getImageID()){
+                    return 0;
+                }
+                return -1;
+            }
+        });
+//        System.out.println("排序后------");
+//        cards.stream().forEach(c -> {
+//            System.out.println(((Card) c).getImageID());
+//        });
         for (index = 0; index < n; index++) {//重设各张牌在场景的位置
-            newx = 90 + 55 * index;
+            newx = 90 + 88 * index;
             y = ((Card) cards.get(index)).getY();
             ((Card) cards.get(index)).moveTo(newx, y);
             ((Card) cards.get(index)).cardID = index;
         }
         
     }
-    
-    class SortByImageID implements Comparator {
-        
-        @Override
-        public int compare(Object o1, Object o2) {
-            Card s1 = (Card) o1;
-            Card s2 = (Card) o2;
-            if (s1.getImageID() > s2.getImageID()) {
-                return 1;
-            }
-            return 0;
-        }
-    }
-    
     
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -435,7 +442,7 @@ public class FrogPanel extends JPanel implements MouseListener {
     private void computerOut(int order) {
         int i;
         //计算机摸牌
-        m_aCards[k].moveTo(90 + 55 * 13, 80);
+        m_aCards[k].moveTo(90 + 88 * 13, 80);
         m_aCards[k].setFront(false);
         playersCard[1].add(m_aCards[k]);
         

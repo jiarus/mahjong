@@ -6,17 +6,17 @@ package com.example.demo.src.mahjong;
  */
 public class HuMain {
     
-    private int[][] allPai = {{6, 1, 4, 1}, {3, 1, 1, 1}, {0}, {5, 2, 3}};
+    //private int[][] allPai = {{6, 1, 4, 1}, {3, 1, 1, 1}, {0}, {5, 2, 3}};
     
-    public HuMain() {
-        if (win(allPai)) {
-            System.out.println("Hu!\n");
-        } else {
-            System.out.println("Not Hu!\n");
-        }
-    }
+//    public HuMain() {
+//        if (win(allPai)) {
+//            System.out.println("Hu!\n");
+//        } else {
+//            System.out.println("Not Hu!\n");
+//        }
+//    }
     
-    public boolean win(int[][] arr) {
+    public boolean win(int[][] allPai) {
         int jiangPos = 0;//"将"的位置
         int yuShu;
         Boolean jiangExisted = false;

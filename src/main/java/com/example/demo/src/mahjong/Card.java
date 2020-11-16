@@ -45,7 +45,7 @@ public class Card extends JButton {
         frontURL = frontURL + m_nNum + ".png";
         showPic(frontURL);
         this.m_bFront = true;
-        this.setSize(89, 105);
+        this.setSize(88, 105);
         this.x = getX();
         this.y = getY();
     }

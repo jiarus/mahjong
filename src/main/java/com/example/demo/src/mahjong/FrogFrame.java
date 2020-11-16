@@ -25,7 +25,7 @@ public class FrogFrame extends JFrame {
         super();
         getContentPane().setLayout(new BorderLayout());
         setTitle("麻将馆");
-        setBounds(50, 50, 980, 730);
+        setBounds(50, 50, 1400, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         final JPanel panel = new JPanel();
         getContentPane().add(panel, BorderLayout.SOUTH);
